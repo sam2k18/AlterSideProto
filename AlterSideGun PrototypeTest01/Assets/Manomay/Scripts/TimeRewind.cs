@@ -69,11 +69,13 @@ public class TimeRewind : MonoBehaviour
     public void StartRewind()
     {
         isRewinding = true;
-        rb.simulated = false;
+        rb.gravityScale = 0;
+       rb.constraints= RigidbodyConstraints2D.FreezeRotation;
     }
     public void StopRewind()
     {
         isRewinding = false;
-        rb.simulated = true;
+        rb.gravityScale = 1;
+        rb.constraints = RigidbodyConstraints2D.None;
     }
 }
