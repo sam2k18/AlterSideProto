@@ -43,7 +43,7 @@ public class TimeRewind : MonoBehaviour
 
     void Record()
     {
-        if (pointsinTime.Count > Mathf.RoundToInt(7f / Time.fixedDeltaTime))
+        if (pointsinTime.Count > Mathf.RoundToInt(5f / Time.fixedDeltaTime))
         {
             pointsinTime.RemoveAt(pointsinTime.Count - 1);
         }
@@ -69,11 +69,15 @@ public class TimeRewind : MonoBehaviour
     public void StartRewind()
     {
         isRewinding = true;
-        rb.simulated = false;
+        rb.gravityScale = 0;
+       rb.constraints= RigidbodyConstraints2D.FreezeRotation;
     }
     public void StopRewind()
     {
         isRewinding = false;
-        rb.simulated = true;
+        rb.gravityScale = 1;
+        
+        rb.velocity = new Vector2(0f, 0f);
+        rb.constraints = RigidbodyConstraints2D.None;
     }
 }
