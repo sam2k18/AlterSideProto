@@ -16,12 +16,13 @@ public class PlayerMovement : MonoBehaviour
 
    public bool facingRight = true;
 
-    private bool isGrounded;
+    private bool isGrounded,isGroundedOnObj;
     public Transform groundCheck;
     public float checkRadius;
-    public LayerMask whatIsGround;
+    public LayerMask whatIsGround,objects;
 
-  
+    public Animator animator;
+
 
      
 
@@ -35,14 +36,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     { 
-          isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround); //check ground for jump
-           
-                
-                //KeyBoard Movement
+          isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+          isGroundedOnObj = Physics2D.OverlapCircle(groundCheck.position, checkRadius, objects);
+        //check ground for jump
 
-            moveInput = Input.GetAxis("Horizontal");
 
-           
+        //KeyBoard Movement
+
+        moveInput = Input.GetAxis("Horizontal");
+
+           if(moveInput!=0)
+        {
+            animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            animator.SetBool("isMoving", false);
+        }
 
             rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
            
@@ -63,14 +73,19 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-       
-      
-       
-        if ((Input.GetKeyDown(KeyCode.UpArrow) ) && isGrounded == true)
-            {
+        rb.gravityScale = 1;
+
+
+        if ((Input.GetKeyDown(KeyCode.W) ) && (isGrounded == true||isGroundedOnObj==true))
+        {
                 rb.velocity = Vector2.up * jumpforce;
-               
+            if(isGroundedOnObj)
+            {
+                rb.gravityScale = 0;
             }
+           
+               
+        }
         
          
             

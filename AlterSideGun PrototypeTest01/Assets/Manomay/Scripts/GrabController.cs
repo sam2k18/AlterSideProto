@@ -14,6 +14,7 @@ public class GrabController : MonoBehaviour
     public LayerMask layer;
     GameObject obj=null;
     RaycastHit2D hit;
+    Rigidbody2D rb;
 
     // Update is called once per frame
     void Update()
@@ -34,6 +35,7 @@ public class GrabController : MonoBehaviour
                 obj.transform.SetParent(ObjectHolder);
                 obj.GetComponent<Rigidbody2D>().simulated = false;
                 isgrabbed = true;
+                rb = obj.GetComponent<Rigidbody2D>();
             } 
         }
 
@@ -41,9 +43,11 @@ public class GrabController : MonoBehaviour
         {  if (obj != null)
             {
                 obj.transform.SetParent(null);
-                obj.GetComponent<Rigidbody2D>().simulated = true;
+               rb.simulated = true;
                 obj = null;
                 isgrabbed = false;
+                rb.velocity = new Vector2(0f, 0f);
+                
             }
 
         }
